@@ -19,6 +19,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Sift, sort and find in slack exports')
     parser.add_argument('rootdir',
                     help='root directory of the slack export')
+    parser.add_argument('channel',
+                    help='the channel to search')
     parser.add_argument('text',
                     help='the text to search for in the message text')
     parser.add_argument('--who', action='store_true',
@@ -26,8 +28,7 @@ if __name__ == "__main__":
     parser.add_argument('--reactions', action='store_true',
                     help='search reactions')
     args = parser.parse_args()
-    rootdir = args.rootdir
-    messages = load_channel_history(rootdir, "security")
+    messages = load_channel_history(args.rootdir, args.channel)
     found = []
     r = re.compile(f".*{args.text}.*")
     for message in messages:
