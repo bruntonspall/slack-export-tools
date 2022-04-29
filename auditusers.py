@@ -3,7 +3,7 @@ import os
 import slack
 import json
 
-approvedDomains = [s.strip() for s in open('domainwhitelist.txt').readlines()]
+approvedDomains = [s.strip() for s in open('domainapprovedlist.txt').readlines()]
 
 approvedUsers = json.load(open('approvedusers.json'))
     
