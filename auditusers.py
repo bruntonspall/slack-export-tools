@@ -27,9 +27,13 @@ emails_not_valid = [email for email in emails if not valid_email(email)]
 
 users = [(member['id'], member['deleted'], member['profile']['real_name'], member['profile']['email'].lower()) for member in members if member['profile'].get('email')]
 users_not_valid = [user for user in users if not user[1] and not valid_email(user[3])]
+approved_user_list = []
 for user in users_not_valid:
     approval = approvedUsers.get(user[0])
     if approval:
-        print(f"User {user[0]} called {user[2]} has email address: {user[3]} - Approved by {approval['approvedby']} for {approval['reason']}")
+        approved_user_list.append((user,approval))
     else:
         print(f"User {user[0]} called {user[2]} has email address: {user[3]} ")
+for user,approval in approved_user_list:
+    print(f"User {user[0]} called {user[2]} has email address: {user[3]} - Approved by {approval['approvedby']} for {approval['reason']}")
+
