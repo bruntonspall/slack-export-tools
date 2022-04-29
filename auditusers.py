@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 import slack
 import json
@@ -13,12 +14,18 @@ def valid_email(email):
             return True 
     return False 
 
+def get_all_users(client):
+    users = []
+    for page in client.users_list(limit=1000):
+        users = users + page["members"]
+    return users
+
 client = slack.WebClient(token=os.environ['SLACK_API_TOKEN'])
-r = client.users_list()
-emails = [member['profile'].get('email').lower() for member in r.data['members'] if member['profile'].get('email')] 
+members = get_all_users(client)
+emails = [member['profile'].get('email').lower() for member in members if member['profile'].get('email')] 
 emails_not_valid = [email for email in emails if not valid_email(email)]
 
-users = [(member['id'], member['deleted'], member['profile']['real_name'], member['profile']['email'].lower()) for member in r.data['members'] if member['profile'].get('email')]
+users = [(member['id'], member['deleted'], member['profile']['real_name'], member['profile']['email'].lower()) for member in members if member['profile'].get('email')]
 users_not_valid = [user for user in users if not user[1] and not valid_email(user[3])]
 for user in users_not_valid:
     approval = approvedUsers.get(user[0])
