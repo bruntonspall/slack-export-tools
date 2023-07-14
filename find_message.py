@@ -53,6 +53,7 @@ if __name__ == "__main__":
     for chan,messages in channels.items():
         for message in messages:
             # Weirdly, slack doesn't reference the channel in the message itself
+            if type(message) is not dict: continue
             message["channel"] = chan
             if args.reactions:
                 if 'reactions' in message:
